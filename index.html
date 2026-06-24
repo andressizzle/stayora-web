@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STAYORA - Encuentra tu Hotel Perfecto</title>
+    <style>
+        /* ==========================================================================
+           1. VARIABLES, FUENTES Y RESETEO (Fundamentos Premium)
+           ========================================================================== */
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght=0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+        :root {
+            --primary: #5c3b87;         /* Púrpura Real Elegante (Principal) */
+            --primary-light: #f3eefb;   /* Púrpura sutil para fondos de secciones y llamadas */
+            --primary-hover: #452a66;   /* Púrpura oscuro para estados activos */
+            --accent: #d4af37;          /* Dorado de lujo para estrellas y detalles importantes */
+            --bg-main: #faf8f5;         /* Crema de fondo ultra suave (confort visual) */
+            --bg-white: #ffffff;        /* Blanco puro para tarjetas y contenedores */
+            --text-dark: #2d2930;       /* Gris casi negro para textos principales */
+            --text-muted: #6e6973;      /* Gris suave para descripciones y subtítulos */
+            --border-color: #e6e2eb;    /* Bordes limpios y sutiles */
+            
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            
+            --shadow-soft: 0 12px 40px rgba(92, 59, 135, 0.04);
+            --shadow-card: 0 16px 32px rgba(45, 41, 48, 0.06);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* ==========================================================================
+           2. NAVEGACIÓN Y CABECERA (Header)
+           ========================================================================== */
+        header {
+            background-color: rgba(247, 247, 247, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+
+        .logo img {
+            height: 32px;
+            width: auto;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 28px;
+        }
+
+        nav a {
+            font-size: 14.5px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .account-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .login-link {
+            font-size: 14.5px;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .login-link:hover {
+            color: var(--primary);
+        }
+
+        .register-button {
+            background-color: var(--primary);
+            color: var(--bg-white);
+            padding: 10px 22px;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 4px 14px rgba(92, 59, 135, 0.2);
+        }
+
+        .register-button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(92, 59, 135, 0.3);
+        }
+
+        /* ==========================================================================
+           3. SECCIÓN HERO Y MOTOR DE BÚSQUEDA
+           ========================================================================== */
+        .hero-search {
+            position: relative;
+            padding: 120px 0 160px 0;
+            background-color: #2d2930;
+            text-align: center;
+            color: var(--bg-white);
+            min-height: 540px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            max-width: 100% !important; 
+            width: 100%;                
+        }
+
+        .hero-video-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            min-width: 100%;
+            min-height: 100%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            width: 100%;
+        }
+
+        .hero-content h1 {
+            font-family: var(--font-heading);
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-content p {
+            font-size: 18px;
+            font-weight: 300;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto 48px auto;
+        }
+
+        .search-form {
+            background-color: var(--bg-white);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            max-width: 1000px;
+            margin: 0 auto;
+            box-shadow: var(--shadow-soft), 0 24px 48px rgba(0,0,0,0.12);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 48px); 
+            bottom: -60px;
+        }
+
+        .search-form fieldset {
+            border: none;
+            display: grid;
+            grid-template-columns: 2.5fr 3fr 1.5fr 2fr;
+            gap: 16px;
+            align-items: flex-end;
+        }
+
+        .search-form legend {
+            display: none;
+        }
+
+        .form-group, .form-group-dates {
+            text-align: left;
+        }
+
+        .form-group-dates {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .search-form label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--primary);
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .search-form input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-family: var(--font-body);
+            font-size: 14.5px;
+            color: var(--text-dark);
+            background-color: var(--bg-main);
+            transition: var(--transition);
+        }
+
+        .search-form input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: var(--bg-white);
+            box-shadow: 0 0 0 4px rgba(92, 59, 135, 0.1);
+        }
+
+        .form-submit button {
+            width: 100%;
+            background-color: var(--primary);
+            color: var(--bg-white);
+            border: none;
+            padding: 15px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .form-submit button:hover {
+            background-color: var(--primary-hover);
+            box-shadow: 0 4px 15px rgba(92, 59, 135, 0.3);
+        }
+
+        /* ==========================================================================
+           4. SECCIONES GENERALES
+           ========================================================================== */
+        section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 24px;
+        }
+
+        .featured-hotels {
+            padding-top: 140px;
+        }
+
+        section h2 {
+            font-family: var(--font-heading);
+            font-size: 32px;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        section p {
+            color: var(--text-muted);
+            font-size: 15px;
+            margin-bottom: 40px;
+        }
+
+        /* ==========================================================================
+           5. TARJETAS DE HOTELES DESTACADOS
+           ========================================================================== */
+        .hotels-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .hotel-card {
+            background-color: var(--bg-white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hotel-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 24px 48px rgba(45, 41, 48, 0.12);
+        }
+
+        .hotel-card img {
+            width: 100%;
+            height: 240px;
+            transition: var(--transition);
+        }
+
+        .hotel-card:hover img {
+            transform: scale(1.03);
+        }
+
+        .card-details {
+            padding: 24px 24px 16px 24px;
+            position: relative;
+            flex-grow: 1;
+        }
+
+        .card-details h3 {
+            font-family: var(--font-body);
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            padding-right: 45px;
+        }
+
+        .hotel-location {
+            font-size: 13.5px;
+            color: var(--text-muted);
+            margin-bottom: 16px !important;
+        }
+
+        .card-rating {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            background-color: rgba(212, 175, 55, 0.12);
+            color: #b08f1a;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .amenities {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .amenities span {
+            background-color: var(--bg-main);
+            color: var(--text-muted);
+            font-size: 12px;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .card-footer {
+            padding: 16px 24px 24px 24px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-footer .price {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-footer .price span:first-child,
+        .card-footer .price span:last-child {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-footer .price .amount {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1.1;
+            margin: 2px 0;
+        }
+
+        .reserve-button {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            padding: 10px 18px;
+            font-size: 13.5px;
+            font-weight: 600;
+            border-radius: var(--radius-md);
+        }
+
+        .reserve-button:hover {
+            background-color: var(--primary);
+            color: var(--bg-white);
+        }
+
+        /* ==========================================================================
+           6. SECCIÓN EXPLORA DESTINOS
+           ========================================================================== */
+        .explore-destinations {
+            background-color: var(--primary-light);
+            max-width: 100%;
+        }
+
+        .explore-destinations .destinations-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .destination-card {
+            background-color: var(--bg-white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            padding: 16px;
+            box-shadow: var(--shadow-soft);
+            transition: var(--transition);
+        }
+
+        .destination-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-card);
+        }
+
+        .destination-card img {
+            width: 100%;
+            height: 180px;
+            border-radius: var(--radius-md);
+            margin-bottom: 16px;
+        }
+
+        .destination-card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        .destination-card p {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 0;
+        }
+
+        /* ==========================================================================
+           7. REDES SOCIALES
+           ========================================================================== */
+        .social-media {
+            padding: 30px 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .social-media ul {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+        }
+
+        .social-media a {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: var(--radius-md);
+            background-color: var(--bg-white);
+            box-shadow: var(--shadow-soft);
+            border: 1px solid var(--border-color);
+        }
+
+        .social-media a:hover {
+            color: var(--primary);
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        /* ==========================================================================
+           8. PIE DE PÁGINA
+           ========================================================================== */
+        footer {
+            background-color: #1e1b21;
+            color: #e6e2eb;
+            padding: 80px 24px 30px 24px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr repeat(3, 1fr);
+            gap: 48px;
+            margin-bottom: 60px;
+        }
+
+        .footer-col h4 {
+            font-size: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--bg-white);
+            margin-bottom: 24px;
+        }
+
+        .footer-info h4 {
+            color: #cbbad9;
+            font-size: 20px;
+        }
+
+        .footer-info p {
+            color: #a8a2ae;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .footer-col ul {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-col a {
+            font-size: 14px;
+            color: #a8a2ae;
+        }
+
+        .footer-col a:hover {
+            color: var(--bg-white);
+            padding-left: 4px;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 30px;
+            border-top: 1px solid #322d38;
+            text-align: center;
+            font-size: 13px;
+            color: #726b78;
+        }
+
+        @media (max-width: 992px) {
+            .search-form {
+                position: static;
+                margin-top: 30px;
+            }
+            .search-form fieldset {
+                grid-template-columns: 1fr;
+            }
+            .featured-hotels {
+                padding-top: 60px;
+            }
+            .hotels-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .explore-destinations .destinations-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .footer-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header-container {
+                flex-direction: column;
+                gap: 16px;
+            }
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 14px;
+            }
+            .hotels-grid, 
+            .explore-destinations .destinations-grid,
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+            .hero-content h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="imagenes/stayora_logo.png" alt="Logotipo STAYORA">
+                    <span>STAYORA</span>
+                </a>
+            </div>
+
+            <nav>
+                 <ul>
+                        <li><a href="busqueda.html">Búsqueda</a></li>
+                        <li><a href="ofertas.html">Ofertas</a></li>
+                        <li><a href="usuario.html#reservas">Mis Reservas</a></li>
+                        <li><a href="destinos.html">Destinos</a></li>
+                        <li><a href="servicios.html">Servicios</a></li>
+                 </ul>
+            </nav>
+
+                <div class="account-actions">
+                        <a href="usuario.html" class="login-link">Andres Medina</a>
+                        <a href="index.html" class="register-button">Salir</a>
+                </div>
+        </div>
+    </header>
+
+    <main>
+
+        <section class="hero-search" id="busqueda">
+            <!--VIDEO-->
+            <video class="hero-video-bg" autoplay muted loop playsinline>
+                <source src="videos/cusco_fondo01.mp4" type="video/mp4">
+                Tu navegador no soporta videos en HTML5.
+            </video>
+            <div class="hero-content">
+                <h1>Encuentra tu Hotel Perfecto</h1>
+                <p>Reserva hoteles al mejor precio y disfruta una experiencia inolvidable</p>
+
+                <form action="busqueda.html" method="get" class="search-form">
+                    <fieldset>
+                        <legend>Panel de Búsqueda</legend>
+                        
+                        <div class="form-group">
+                            <label for="destino">Destino</label>
+                            <input type="text" id="destino" name="destino" list="destinos-sugeridos" placeholder="¿A dónde viajas?" required>
+            
+                            <datalist id="destinos-sugeridos">
+                                <option value="Cusco, Perú">
+                                <option value="Cusco - Valle Sagrado">
+                                <option value="Cusco - Machupicchu">
+                                <option value="Lima, Perú">
+                                <option value="Arequipa, Perú">
+                            </datalist>
+                        </div>
+
+                        <div class="form-group-dates">
+                            <div class="form-group">
+                                <label for="check-in">Check-in</label>
+                                <input type="date" id="check-in" name="check-in" value="2026-05-12">
+                            </div>
+                            <div class="form-group">
+                                <label for="check-out">Check-out</label>
+                                <input type="date" id="check-out" name="check-out" value="2026-05-20">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="huespedes">Huéspedes</label>
+                            <input type="number" id="huespedes" name="huespedes" value="3" min="1">
+                        </div>
+
+                        <div class="form-submit">
+                            <button type="submit" class="btn-search-link">Buscar hoteles</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </section>
+
+        <section class="featured-hotels" id="hoteles">
+            <h2>Hoteles Destacados en Cusco</h2>
+            <p>Las mejores opciones para tu próximo viaje</p>
+
+            <div class="hotels-grid">
+                <article class="hotel-card">
+                    <img src="imagenes/JW MARRIOT.jpg" alt="Imagen del JW Marriott El Convento Cusco">
+                    <div class="card-details">
+                        <h3>JW Marriott El Convento Cusco</h3>
+                        <p class="hotel-location">Hotel de lujo en el centro histórico</p>
+                        <div class="amenities">
+                            <span>Wifi</span>
+                            <span>Breakfast</span>
+                            <span>Parking</span>
+                        </div>
+                        <div class="card-rating">
+                            <span>4.7 ★</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="price">
+                            <span>desde</span>
+                            <span class="amount">$150</span>
+                            <span>por noche</span>
+                        </div>
+                        <a href="proceso-reserva.html" class="reserve-button">Reservar ahora</a>
+                    </div>
+                </article>
+
+                <article class="hotel-card">
+                    <img src="imagenes/Hilton Garden Inn Cusco.jpg" alt="Imagen del Hilton Garden Inn Cusco">
+                    <div class="card-details">
+                        <h3>Hilton Garden Inn Cusco</h3>
+                        <p class="hotel-location">Comodidad moderna con vista a Cusco</p>
+                        <div class="amenities">
+                            <span>Wifi</span>
+                            <span>Breakfast</span>
+                            <span>Parking</span>
+                        </div>
+                        <div class="card-rating">
+                            <span>4.6 ★</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="price">
+                            <span>desde</span>
+                            <span class="amount">$145</span>
+                            <span>por noche</span>
+                        </div>
+                        <a href="proceso-reserva.html" class="reserve-button">Reservar ahora</a>
+                    </div>
+                </article>
+
+                <article class="hotel-card">
+                    <img src="imagenes/Antigua Casona San Blas.jpg" alt="Imagen de Antigua Casona San Blas">
+                    <div class="card-details">
+                        <h3>Antigua Casona San Blas</h3>
+                        <p class="hotel-location">Experiencia andina en San Blas</p>
+                        <div class="amenities">
+                            <span>Wifi</span>
+                            <span>Breakfast</span>
+                        </div>
+                        <div class="card-rating">
+                            <span>4.9 ★</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="price">
+                            <span>desde</span>
+                            <span class="amount">$135</span>
+                            <span>por noche</span>
+                        </div>
+                        <a href="proceso-reserva.html" class="reserve-button">Reservar ahora</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="explore-destinations" id="destinos">
+            <h2>Explora los destinos más increíbles de Cusco</h2>
+
+            <div class="destinations-grid">
+                <article class="destination-card">
+                    <img src="imagenes/cusco.jpg" alt="Imagen de Machu Picchu">
+                    <h3>Machu Picchu</h3>
+                    <p>La maravilla histórica más impresionante del Perú.</p>
+                </article>
+
+                <article class="destination-card">
+                    <img src="imagenes/Vinicunca.jpg" alt="Imagen de Vinicunca (Montaña de 7 Colores)">
+                    <h3>Vinicunca</h3>
+                    <p>Paisajes únicos que combinan aventura y naturaleza.</p>
+                </article>
+
+                <article class="destination-card">
+                    <img src="imagenes/Sacsayhuaman.jpg" alt="Imagen de Sacsayhuamán">
+                    <h3>Sacsayhuamán</h3>
+                    <p>Historia, cultura y arquitectura del antiguo imperio Inca.</p>
+                </article>
+
+                <article class="destination-card">
+                    <img src="imagenes/Valle Sagrado.jpg" alt="Imagen del Valle Sagrado">
+                    <h3>Valle Sagrado</h3>
+                    <p>Un destino lleno de naturaleza y tradición andina.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="social-media">
+            <ul>
+                <li><a href="#" class="icon-facebook">Facebook</a></li>
+                <li><a href="#" class="icon-instagram">Instagram</a></li>
+                <li><a href="#" class="icon-whatsapp">WhatsApp</a></li>
+            </ul>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col footer-info">
+                <h4>STAYORA</h4>
+                <p>Explora Cusco con hoteles y experiencias únicas.</p>
+                <p><strong>Cusco, Perú.</strong></p>
+                <p>contacto@stayora.com</p>
+            </div>
+
+            <div class="footer-col footer-explore">
+                <h4>Explorar</h4>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="index.html">Hoteles</a></li>
+                    <li><a href="destinos.html">Destinos</a></li>
+                    <li><a href="ofertas.html">Ofertas</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col footer-help">
+                <h4>Ayuda</h4>
+                <ul>
+                    <li><a href="ayuda.html">FAQ</a></li>
+                    <li><a href="ayuda.html#contacto">Contacto</a></li>
+                    <li><a href="ayuda.html#soporte">Chat de soporte</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col footer-legal">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="legal.html#privacidad">Política de privacidad</a></li>
+                    <li><a href="legal.html#terminos">Términos y condiciones</a></li>
+                    <li><a href="legal.html#cookies">Política de cookies</a></li>
+                    <li><a href="legal.html#seguridad">Seguridad y protección</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 Stayora. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

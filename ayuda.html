@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STAYORA - Ayuda y Soporte</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght=0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #5c3b87;
+            --primary-light: #f3eefb;
+            --primary-hover: #452a66;
+            --accent: #d4af37;
+            --bg-main: #faf8f5;
+            --bg-white: #ffffff;
+            --text-dark: #2d2930;
+            --text-muted: #6e6973;
+            --border-color: #e6e2eb;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            --shadow-soft: 0 12px 40px rgba(92, 59, 135, 0.04);
+            --shadow-card: 0 16px 32px rgba(45, 41, 48, 0.06);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: rgba(247, 247, 247, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 1px;
+            text-decoration: none;
+        }
+
+        .logo img { height: 32px; }
+
+        nav ul { display: flex; gap: 28px; }
+
+        nav a { font-size: 14.5px; font-weight: 500; color: var(--text-dark); text-decoration: none; }
+
+        nav a:hover, nav a.active { color: var(--primary); font-weight: 600; }
+
+        .account-actions { display: flex; align-items: center; gap: 20px; }
+
+        .login-link {
+            font-size: 14.5px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+
+        .register-button {
+            background-color: var(--primary);
+            color: var(--bg-white);
+            padding: 10px 22px;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        /* CORRECCIÓN: Filtro gris oscuro sofisticado idéntico al de destinos.html */
+        .help-hero {
+            background: linear-gradient(rgba(45, 41, 48, 0.65), rgba(45, 41, 48, 0.65)), url('imagenes/cusco.jpg') center/cover no-repeat;
+            padding: 80px 24px;
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 20px;
+            border-radius: var(--radius-lg);
+        }
+
+        .help-hero h1 {
+            font-family: var(--font-heading);
+            font-size: 38px;
+            margin-bottom: 8px;
+        }
+
+        .help-hero p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .help-content {
+            max-width: 800px;
+            margin: 0 auto 80px auto;
+            padding: 0 24px;
+        }
+
+        .faq-accordion {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .faq-item {
+            background-color: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .faq-header {
+            padding: 20px;
+            font-family: var(--font-body);
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--bg-main);
+            user-select: none;
+            text-align: left;
+        }
+
+        .faq-header:hover {
+            color: var(--primary);
+        }
+
+        .faq-body {
+            padding: 20px;
+            font-size: 14.5px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            line-height: 1.6;
+            display: none;
+            text-align: left;
+        }
+
+        .faq-item.active .faq-body {
+            display: block;
+        }
+
+        /* Panel de Contacto de Soporte */
+        .support-card {
+            background-color: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            text-align: center;
+            box-shadow: var(--shadow-card);
+        }
+
+        .support-card h3 {
+            font-family: var(--font-heading);
+            font-size: 24px;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+        }
+
+        .support-card p {
+            font-size: 15px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        .btn-chat {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: var(--radius-md);
+            font-family: var(--font-body);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(92, 59, 135, 0.2);
+        }
+
+        .btn-chat:hover {
+            background-color: var(--primary-hover);
+        }
+
+        footer {
+            background-color: #1e1b21;
+            color: #e6e2eb;
+            padding: 80px 24px 30px 24px;
+            margin-top: auto;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr repeat(3, 1fr);
+            gap: 48px;
+            margin-bottom: 60px;
+        }
+
+        .footer-col h4 {
+            font-size: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--bg-white);
+            margin-bottom: 24px;
+        }
+
+        .footer-info h4 { color: #cbbad9; font-size: 20px; }
+
+        .footer-info p { color: #a8a2ae; font-size: 14px; margin-bottom: 12px; }
+
+        .footer-col ul { display: flex; flex-direction: column; gap: 12px; }
+
+        .footer-col a { font-size: 14px; color: #a8a2ae; text-decoration: none; }
+
+        .footer-col a:hover { color: var(--bg-white); padding-left: 4px; }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 30px;
+            border-top: 1px solid #322d38;
+            text-align: center;
+            font-size: 13px;
+            color: #726b78;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="imagenes/stayora_logo.png" alt="Logotipo STAYORA">
+                    <span>STAYORA</span>
+                </a>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="busqueda.html">Búsqueda</a></li>
+                    <li><a href="ofertas.html">Ofertas</a></li>
+                    <li><a href="usuario.html#reservas">Mis Reservas</a></li>
+                    <li><a href="destinos.html">Destinos</a></li>
+                    <li><a href="servicios.html">Servicios</a></li>
+                </ul>
+            </nav>
+
+            <div class="account-actions">
+                <a href="usuario.html" class="login-link">Juan Pérez</a>
+                <a href="index.html" class="register-button">Salir</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="help-hero">
+            <h1>Centro de Ayuda</h1>
+            <p>Resolvemos tus dudas al instante para que solo te preocupes por disfrutar</p>
+        </section>
+
+        <section class="help-content">
+            <div class="faq-accordion">
+                
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-header">
+                        ¿Cómo gestiono mis reservas? <span>+</span>
+                    </div>
+                    <div class="faq-body">
+                        Puedes revisar y editar todas tus reservas activas e históricas ingresando a la sección "Mis Reservas" desde el menú de navegación de tu cuenta.
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-header">
+                        ¿Las tarifas de taxi son fijas? <span>+</span>
+                    </div>
+                    <div class="faq-body">
+                        Sí, todas las reservas hechas a través de nuestra sección de Servicios de Viaje cuentan con tarifas fijas garantizadas por nuestros socios oficiales de Cusco.
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-header">
+                        ¿Puedo solicitar guías de turismo bilingües? <span>+</span>
+                    </div>
+                    <div class="faq-body">
+                        ¡Por supuesto! Al concretar la solicitud de servicios con agencias como Apus Perú o Inka Time, podrás elegir el idioma de tu preferencia para el recorrido guiado.
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="support-card" id="soporte">
+                <h3>¿No encontraste lo que buscabas?</h3>
+                <p>Nuestros asesores de atención al cliente están listos para ayudarte en vivo.</p>
+                <button class="btn-chat">Iniciar Chat de Soporte 💬</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col footer-info">
+                <h4>STAYORA</h4>
+                <p>Explora Cusco con hoteles y experiencias únicas.</p>
+                <p><strong>Cusco, Perú.</strong></p>
+                <p>contacto@stayora.com</p>
+            </div>
+
+            <div class="footer-col footer-explore">
+                <h4>Explorar</h4>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="index.html">Hoteles</a></li>
+                    <li><a href="destinos.html">Destinos</a></li>
+                    <li><a href="ofertas.html">Ofertas</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col footer-help">
+                <h4>Ayuda</h4>
+                <ul>
+                    <li><a href="ayuda.html">FAQ</a></li>
+                    <li><a href="ayuda.html#contacto">Contacto</a></li>
+                    <li><a href="ayuda.html#soporte">Chat de soporte</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col footer-legal">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="legal.html#privacidad">Política de privacidad</a></li>
+                    <li><a href="legal.html#terminos">Términos y condiciones</a></li>
+                    <li><a href="legal.html#cookies">Política de cookies</a></li>
+                    <li><a href="legal.html#seguridad">Seguridad y protección</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 Stayora. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleFaq(element) {
+            element.classList.toggle('active');
+            const span = element.querySelector('.faq-header span');
+            if(element.classList.contains('active')){
+                span.innerText = '−';
+            } else {
+                span.innerText = '+';
+            }
+        }
+    </script>
+</body>
+</html>

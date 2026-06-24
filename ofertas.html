@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STAYORA - Ofertas Exclusivas</title>
+    <style>
+        /* ==========================================================================
+           1. VARIABLES, FUENTES Y RESETEO (ADN Corporativo de Stayora)
+           ========================================================================== */
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght=0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght=300;400;500;600;700&display=swap');
+
+        :root {
+            --primary: #5c3b87;         /* Púrpura Real Elegante (Principal) */
+            --primary-light: #f3eefb;   /* Púrpura sutil para fondos y detalles */
+            --primary-hover: #452a66;   /* Púrpura oscuro para estados activos */
+            --accent: #d4af37;          /* Dorado de lujo para detalles especiales */
+            --bg-main: #faf8f5;         /* Crema de fondo suave para máximo confort visual */
+            --bg-white: #ffffff;        /* Blanco puro para tarjetas y contenedores */
+            --text-dark: #2d2930;       /* Gris casi negro para textos principales */
+            --text-muted: #6e6973;      /* Gris suave para descripciones y subtítulos */
+            --border-color: #e6e2eb;    /* Bordes limpios y sutiles */
+            
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            
+            --shadow-soft: 0 12px 40px rgba(92, 59, 135, 0.04);
+            --shadow-card: 0 16px 32px rgba(45, 41, 48, 0.06);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* ==========================================================================
+           2. NAVEGACIÓN Y CABECERA (Header Unificado)
+           ========================================================================== */
+        header {
+            background-color: rgba(247, 247, 247, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+
+        .logo img {
+            height: 32px;
+            width: auto;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 28px;
+        }
+
+        nav a {
+            font-size: 14.5px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .account-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .login-link {
+            font-size: 14.5px;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .login-link:hover {
+            color: var(--primary);
+        }
+
+        .register-button {
+            background-color: var(--primary);
+            color: var(--bg-white);
+            padding: 10px 22px;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 4px 14px rgba(92, 59, 135, 0.2);
+            transition: var(--transition);
+        }
+
+        .register-button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(92, 59, 135, 0.3);
+        }
+
+        /* ==========================================================================
+           3. ESTRUCTURA Y CONTENEDOR DE OFERTAS
+           ========================================================================== */
+        .offers-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+
+        .offers-section-header {
+            margin-bottom: 40px;
+            border-bottom: none;
+            background: transparent;
+            position: static;
+            text-align: left;
+        }
+
+        .main-title {
+            font-family: var(--font-heading);
+            font-size: 36px;
+            color: var(--text-dark);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+        }
+
+        .section-subtitle {
+            font-size: 15px;
+            color: var(--text-muted);
+        }
+
+        .offers-block {
+            margin-bottom: 50px;
+        }
+
+        .block-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            position: relative;
+            padding-bottom: 6px;
+            text-align: left;
+        }
+
+        .block-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background-color: var(--primary);
+            border-radius: 2px;
+        }
+
+        /* ==========================================================================
+           4. GRILLA PARA PAQUETES Y DESCUENTOS
+           ========================================================================== */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .offer-card {
+            background-color: var(--bg-white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border-color);
+        }
+
+        .offer-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(45, 41, 48, 0.1);
+        }
+
+        .card-image-wrapper {
+            position: relative;
+            height: 220px;
+            overflow: hidden;
+        }
+
+        .card-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            transition: var(--transition);
+            object-fit: cover;
+        }
+
+        .offer-card:hover .card-image-wrapper img {
+            transform: scale(1.04);
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 30px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            z-index: 2;
+        }
+
+        .bg-gold { background-color: var(--accent); color: var(--text-dark) !important; }
+        .bg-purple { background-color: var(--primary); }
+        .bg-gray { background-color: var(--text-dark); }
+        .bg-discount { background-color: #ef4444; }
+
+        .card-content {
+            padding: 24px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-content h3 {
+            font-family: var(--font-body);
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        .card-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .card-footer-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 15px;
+            margin-top: auto;
+        }
+
+        .card-pricing {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        .price-old {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-decoration: line-through;
+        }
+
+        .price-current {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .price-current small {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        /* ==========================================================================
+           5. PIE DE PÁGINA (Footer)
+           ========================================================================== */
+        footer {
+            background-color: #1e1b21;
+            color: #e6e2eb;
+            padding: 80px 24px 30px 24px;
+            margin-top: 80px;
+        }
+
+        .footer-main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr repeat(3, 1fr);
+            gap: 48px;
+            margin-bottom: 60px;
+        }
+
+        .footer-column h3 {
+            font-size: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--bg-white);
+            margin-bottom: 24px;
+            text-align: left;
+        }
+
+        .brand-col h3 {
+            color: #cbbad9;
+            font-size: 20px;
+        }
+
+        .brand-col p {
+            color: #a8a2ae;
+            font-size: 14px;
+            margin-bottom: 12px;
+            text-align: left;
+        }
+
+        .footer-column ul {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-column a {
+            font-size: 14px;
+            color: #a8a2ae;
+            transition: var(--transition);
+        }
+
+        .footer-column a:hover {
+            color: var(--bg-white);
+            padding-left: 4px;
+        }
+
+        .footer-credits {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 30px;
+            border-top: 1px solid #322d38;
+            text-align: center;
+            font-size: 13px;
+            color: #726b78;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="imagenes/stayora_logo.png" alt="Logotipo STAYORA" onerror="this.src='https://placehold.co/150x50/5c3b87/ffffff?text=STAYORA'">
+                    <span>STAYORA</span>
+                </a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="busqueda.html">Búsqueda</a></li>
+                    <li><a href="ofertas.html" class="active">Ofertas</a></li>
+                    <li><a href="usuario.html#reservas">Mis Reservas</a></li>
+                    <li><a href="destinos.html">Destinos</a></li>
+                    <li><a href="servicios.html">Servicios</a></li>
+                </ul>
+            </nav>
+                <div class="account-actions">
+                    <a href="usuario.html" class="login-link">Andres Medina</a>
+                    <a href="index.html" class="register-button">Salir</a>
+                </div>
+        </div>
+    </header>
+
+    <main class="offers-container">
+        <header class="offers-section-header">
+            <h1 class="main-title">OFERTAS EXCLUSIVAS</h1>
+            <p class="section-subtitle">Aprovecha nuestras tarifas preferenciales y paquetes diseñados para vivir Cusco de una manera inolvidable.</p>
+        </header>
+
+        <section class="offers-block">
+            <h2 class="block-title">PAQUETES TURÍSTICOS</h2>
+            <div class="cards-grid">
+                <article class="offer-card" id="pkg-desayuno">
+                    <div class="card-image-wrapper">
+                        <span class="card-badge bg-gold">Más Vendido</span>
+                        <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=600&auto=format&fit=cover" alt="Hotel + desayuno incluido">
+                    </div>
+                    <div class="card-content">
+                        <h3>Hotel + Desayuno Buffet Incluido</h3>
+                        <p class="card-desc">Empieza tus mañanas con lo mejor de la gastronomía andina tradicional y frutas tropicales frescas de Quillabamba.</p>
+                        <div class="card-footer-controls">
+                            <div class="card-pricing">
+                                <span class="price-old">US$ 120</span>
+                                <span class="price-current">US$ 89<small>/noche</small></span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="offer-card" id="pkg-citytour">
+                    <div class="card-image-wrapper">
+                        <span class="card-badge bg-purple">Full Day</span>
+                        <img src="https://images.unsplash.com/photo-1526392060635-9d6019884377?q=80&w=600&auto=format&fit=cover" alt="Hotel + tour por ciudad">
+                    </div>
+                    <div class="card-content">
+                        <h3>Hotel + Tour por la Ciudad Imperial</h3>
+                        <p class="card-desc">Incluye guiado privado por Sacsayhuamán, el Qorikancha y transporte ejecutivo ida y vuelta desde el hotel.</p>
+                        <div class="card-footer-controls">
+                            <div class="card-pricing">
+                                <span class="price-old">US$ 150</span>
+                                <span class="price-current">US$ 115<small>/noche</small></span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="offer-card" id="pkg-airport">
+                    <div class="card-image-wrapper">
+                        <span class="card-badge bg-gray">Premium</span>
+                        <img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?q=80&w=600&auto=format&fit=cover" alt="Hotel + Transporte aeropuerto">
+                    </div>
+                    <div class="card-content">
+                        <h3>Hotel + Traslado del Aeropuerto</h3>
+                        <p class="card-desc">Viaja sin preocupaciones desde tu llegada al Cusco en transporte privado oficial con chofer profesional bilingüe.</p>
+                        <div class="card-footer-controls">
+                            <div class="card-pricing">
+                                <span class="price-old">US$ 110</span>
+                                <span class="price-current">US$ 85<small>/noche</small></span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="offers-block">
+            <h2 class="block-title">DESCUENTOS POR TEMPORADA</h2>
+            <div class="cards-grid">
+                <article class="offer-card" id="disc-weekend">
+                    <div class="card-image-wrapper">
+                        <span class="card-badge bg-discount">-25% Off</span>
+                        <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?q=80&w=600&auto=format&fit=cover" alt="Promoción de fin de semana">
+                    </div>
+                    <div class="card-content">
+                        <h3>Escapadas de Fin de Semana</h3>
+                        <p class="card-desc">Desconéctate de la rutina de viernes a domingo con una tarifa de descuento insuperable en hoteles con chimenea.</p>
+                        <div class="card-pricing">
+                            <span class="price-old">US$ 95</span>
+                            <span class="price-current">US$ 71<small>/noche</small></span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="offer-card" id="disc-early">
+                    <div class="card-image-wrapper">
+                        <span class="card-badge bg-discount">-30% Off</span>
+                        <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?q=80&w=600&auto=format&fit=cover" alt="Descuento por reserva anticipada">
+                    </div>
+                    <div class="card-content">
+                        <h3>Descuento por Reserva Anticipada</h3>
+                        <p class="card-desc">Planea tu viaje con tiempo y asegura el precio de temporada más bajo garantizado para reservas de lujo.</p>
+                        <div class="card-pricing">
+                            <span class="price-old">US$ 130</span>
+                            <span class="price-current">US$ 91<small>/noche</small></span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-main-container">
+            <div class="footer-column brand-col">
+                <h3>STAYORA</h3>
+                <p>Explora Cusco con hoteles y experiences únicas.</p>
+                <p><strong>Cusco, Perú.</strong></p>
+                <p>contacto@stayora.com</p>
+            </div>
+            <div class="footer-column">
+                <h3>EXPLORAR</h3>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="busqueda.html">Hoteles</a></li>
+                    <li><a href="destinos.html">Destinos</a></li>
+                    <li><a href="ofertas.html">Paquetes</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>AYUDA</h3>
+                <ul>
+                    <li><a href="ayuda.html">FAQ</a></li>
+                    <li><a href="ayuda.html#contacto">Contacto</a></li>
+                    <li><a href="ayuda.html#soporte">Chat de soporte</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>LEGAL</h3>
+                <ul>
+                    <li><a href="legal.html#privacidad">Política de privacidad</a></li>
+                    <li><a href="legal.html#terminos">Términos y condiciones</a></li>
+                    <li><a href="legal.html#cookies">Política de cookies</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-credits">
+            <p>&copy; 2026 Stayora. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html>

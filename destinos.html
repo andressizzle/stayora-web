@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STAYORA - Destinos Turísticos</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #5c3b87;
+            --primary-light: #f3eefb;
+            --primary-hover: #452a66;
+            --accent: #d4af37;
+            --bg-main: #faf8f5;
+            --bg-white: #ffffff;
+            --text-dark: #2d2930;
+            --text-muted: #6e6973;
+            --border-color: #e6e2eb;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            --shadow-soft: 0 12px 40px rgba(92, 59, 135, 0.04);
+            --shadow-card: 0 16px 32px rgba(45, 41, 48, 0.06);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+
+        ul { list-style: none; }
+
+        header {
+            background-color: rgba(247, 247, 247, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+
+        .logo img {
+            height: 32px;
+            width: auto;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 28px;
+        }
+
+        nav a {
+            font-size: 14.5px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .account-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .login-link {
+            font-size: 14.5px;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .register-button {
+            background-color: var(--primary);
+            color: var(--bg-white);
+            padding: 10px 22px;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 4px 14px rgba(92, 59, 135, 0.2);
+        }
+
+        .register-button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(92, 59, 135, 0.3);
+        }
+
+        .destinations-hero {
+            background: linear-gradient(rgba(45, 41, 48, 0.65), rgba(45, 41, 48, 0.65)), url('imagenes/cusco.jpg') center/cover no-repeat;
+            padding: 100px 24px;
+            text-align: center;
+            color: var(--bg-white);
+            margin-bottom: 40px;
+            border-radius: var(--radius-lg);
+            margin-top: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .badge-guia {
+            background-color: var(--accent);
+            color: var(--text-dark);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+
+        .destinations-hero h1 {
+            font-family: var(--font-heading);
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .destinations-hero p {
+            font-size: 16px;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .content-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px 80px 24px;
+        }
+
+        .filter-section {
+            margin-bottom: 40px;
+            text-align: left;
+        }
+
+        .filter-section h2 {
+            font-family: var(--font-body);
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 16px;
+        }
+
+        .filter-tab {
+            background-color: var(--bg-white);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 10px 20px;
+            font-family: var(--font-body);
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-tab:hover, .filter-tab.active {
+            background-color: var(--primary);
+            color: var(--bg-white);
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(92, 59, 135, 0.15);
+        }
+
+        .dest-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .dest-card {
+            background-color: var(--bg-white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border-color);
+        }
+
+        .dest-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 24px 48px rgba(45, 41, 48, 0.12);
+        }
+
+        .dest-image-container {
+            position: relative;
+            overflow: hidden;
+            height: 220px;
+        }
+
+        .dest-image-container img {
+            width: 100%;
+            height: 100%;
+            transition: var(--transition);
+        }
+
+        .dest-card:hover .dest-image-container img {
+            transform: scale(1.05);
+        }
+
+        .badge-imperdible {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background-color: #e11d48;
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 30px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 8px rgba(225, 29, 72, 0.2);
+        }
+
+        .badge-category {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background-color: var(--primary-hover);
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 30px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .dest-info {
+            padding: 24px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .dest-info h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .dest-info p {
+            font-size: 14.5px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .maps-link {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: underline;
+        }
+
+        .maps-link:hover {
+            color: var(--primary-hover);
+        }
+
+        footer {
+            background-color: #1e1b21;
+            color: #e6e2eb;
+            padding: 80px 24px 30px 24px;
+            margin-top: 80px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr repeat(3, 1fr);
+            gap: 48px;
+            margin-bottom: 60px;
+        }
+
+        .footer-col h4 {
+            font-size: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--bg-white);
+            margin-bottom: 24px;
+        }
+
+        .footer-info h4 {
+            color: #cbbad9;
+            font-size: 20px;
+        }
+
+        .footer-info p {
+            color: #a8a2ae;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .footer-col ul {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-col a {
+            font-size: 14px;
+            color: #a8a2ae;
+        }
+
+        .footer-col a:hover {
+            color: var(--bg-white);
+            padding-left: 4px;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 30px;
+            border-top: 1px solid #322d38;
+            text-align: center;
+            font-size: 13px;
+            color: #726b78;
+        }
+
+        @media (max-width: 992px) {
+            .dest-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-container { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 600px) {
+            .dest-grid { grid-template-columns: 1fr; }
+            .header-container { flex-direction: column; gap: 16px; }
+            nav ul { justify-content: center; flex-wrap: wrap; }
+            .footer-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="imagenes/stayora_logo.png" alt="Logotipo STAYORA">
+                    <span>STAYORA</span>
+                </a>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="busqueda.html">Búsqueda</a></li>
+                    <li><a href="ofertas.html">Ofertas</a></li>
+                    <li><a href="usuario.html#reservas">Mis Reservas</a></li>
+                    <li><a href="destinos.html" class="active">Destinos</a></li>
+                    <li><a href="servicios.html">Servicios</a></li>
+                </ul>
+            </nav>
+
+                    <div class="account-actions">
+                            <a href="usuario.html" class="login-link">Andres Medina</a>
+                            <a href="index.html" class="register-button">Salir</a>
+                    </div>  
+        </div>
+    </header>
+
+    <main>
+        <section class="destinations-hero">
+            <span class="badge-guia">Guía Turística Oficial</span>
+            <h1>Destinos Turísticos</h1>
+            <p>Explora los atractivos arqueológicos, naturales y culturales más espectaculares de Cusco</p>
+        </section>
+
+        <section class="content-section">
+            <div class="filter-section">
+                <h2>Filtrar por Categoría</h2>
+                <div class="filter-tabs">
+                    <button class="filter-tab active" onclick="filtrarDestinos('todos')">Todos los Destinos</button>
+                    <button class="filter-tab" onclick="filtrarDestinos('historia')">Historia, Cultura y Religión</button>
+                    <button class="filter-tab" onclick="filtrarDestinos('naturaleza')">Naturaleza, Aventura y Vida Silvestre</button>
+                    <button class="filter-tab" onclick="filtrarDestinos('museos')">Museos y Experiencias locales</button>
+                </div>
+            </div>
+
+            <div class="dest-grid">
+                
+                <article class="dest-card" data-category="historia">
+                    <div class="dest-image-container">
+                        <span class="badge-imperdible">Machu Picchu - Destino Imperdible</span>
+                        <img src="imagenes/cusco.jpg" alt="Machu Picchu" onerror="this.src='https://placehold.co/600x400/5c3b87/ffffff?text=Machu+Picchu'">
+                    </div>
+                    <div class="dest-info">
+                        <h3>Machu Picchu</h3>
+                        <p>Descubre el legado imperecedero de los Incas. Una de las nuevas maravillas del mundo, rodeada de misterio y espectaculares paisajes de montaña.</p>
+                        <a href="https://maps.google.com" target="_blank" class="maps-link">URL Link Google Maps 🗺️</a>
+                    </div>
+                </article>
+
+                <article class="dest-card" data-category="historia">
+                    <div class="dest-image-container">
+                        <span class="badge-category">Historia, Cultura y Religión</span>
+                        <img src="imagenes/Sacsayhuaman.jpg" alt="Sacsayhuamán" onerror="this.src='https://placehold.co/600x400/5c3b87/ffffff?text=Sacsayhuaman'">
+                    </div>
+                    <div class="dest-info">
+                        <h3>Sacsayhuamán</h3>
+                        <p>Asómbrate con los bloques de piedra colosales de esta imponente fortaleza ceremonial andina, ubicada a pocos minutos de la Plaza de Armas.</p>
+                        <a href="https://maps.google.com" target="_blank" class="maps-link">URL Link Google Maps 🗺️</a>
+                    </div>
+                </article>
+
+                <article class="dest-card" data-category="naturaleza">
+                    <div class="dest-image-container">
+                        <span class="badge-category">Naturaleza, Aventura y Vida Silvestre</span>
+                        <img src="imagenes/Vinicunca.jpg" alt="Vinicunca" onerror="this.src='https://placehold.co/600x400/5c3b87/ffffff?text=Vinicunca'">
+                    </div>
+                    <div class="dest-info">
+                        <h3>Vinicunca</h3>
+                        <p>Camina entre paisajes altoandinos hacia la mágica Montaña de los Siete Colores, un espectáculo visual único formado por minerales milenarios.</p>
+                        <a href="https://maps.google.com" target="_blank" class="maps-link">URL Link Google Maps 🗺️</a>
+                    </div>
+                </article>
+
+                <article class="dest-card" data-category="naturaleza">
+                    <div class="dest-image-container">
+                        <span class="badge-category">Naturaleza, Aventura y Vida Silvestre</span>
+                        <img src="imagenes/Valle Sagrado.jpg" alt="Valle Sagrado" onerror="this.src='https://placehold.co/600x400/5c3b87/ffffff?text=Valle+Sagrado'">
+                    </div>
+                    <div class="dest-info">
+                        <h3>Valle Sagrado</h3>
+                        <p>Explora un oasis andino lleno de paz, pintorescos mercados tradicionales y asombrosos sitios arqueológicos como Ollantaytambo y Pisac.</p>
+                        <a href="https://maps.google.com" target="_blank" class="maps-link">URL Link Google Maps 🗺️</a>
+                    </div>
+                </article>
+
+                <article class="dest-card" data-category="museos">
+                    <div class="dest-image-container">
+                        <span class="badge-category">Museos y Experiencias locales</span>
+                        <img src="imagenes/JW MARRIOT.jpg" alt="Templo de Coricancha" onerror="this.src='https://placehold.co/600x400/5c3b87/ffffff?text=Coricancha'">
+                    </div>
+                    <div class="dest-info">
+                        <h3>Templo del Coricancha</h3>
+                        <p>Adéntrate en el centro religioso más sagrado del imperio, donde la arquitectura incaica dedicada al sol se fusiona con el arte colonial.</p>
+                        <a href="https://maps.google.com" target="_blank" class="maps-link">URL Link Google Maps 🗺️</a>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col footer-info">
+                <h4>STAYORA</h4>
+                <p>Explora Cusco con hoteles y experiencias únicas.</p>
+                <p><strong>Cusco, Perú.</strong></p>
+                <p>contacto@stayora.com</p>
+            </div>
+
+            <div class="footer-col footer-explore">
+                <h4>Explorar</h4>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="index.html">Hoteles</a></li>
+                    <li><a href="destinos.html">Destinos</a></li>
+                    <li><a href="ofertas.html">Ofertas</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col footer-help">
+                <h4>Ayuda</h4>
+                <ul>
+                    <li><a href="ayuda.html">FAQ</a></li>
+                    <li><a href="ayuda.html#contacto">Contacto</a></li>
+                    <li><a href="ayuda.html#soporte">Chat de soporte</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col footer-legal">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="legal.html#privacidad">Política de privacidad</a></li>
+                    <li><a href="legal.html#terminos">Términos y condiciones</a></li>
+                    <li><a href="legal.html#cookies">Política de cookies</a></li>
+                    <li><a href="legal.html#seguridad">Seguridad y protección</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 Stayora. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        function filtrarDestinos(categoria) {
+            const botones = document.querySelectorAll('.filter-tab');
+            botones.forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            const tarjetas = document.querySelectorAll('.dest-card');
+            tarjetas.forEach(card => {
+                if (categoria === 'todos') {
+                    card.style.display = 'flex';
+                } else {
+                    if (card.getAttribute('data-category') === categoria) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

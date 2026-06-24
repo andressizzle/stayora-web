@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STAYORA - Información Legal</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #5c3b87;
+            --primary-light: #f3eefb;
+            --primary-hover: #452a66;
+            --accent: #d4af37;
+            --bg-main: #faf8f5;
+            --bg-white: #ffffff;
+            --text-dark: #2d2930;
+            --text-muted: #6e6973;
+            --border-color: #e6e2eb;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            --shadow-soft: 0 12px 40px rgba(92, 59, 135, 0.04);
+            --shadow-card: 0 16px 32px rgba(45, 41, 48, 0.06);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: rgba(247, 247, 247, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+
+        .logo img { height: 32px; }
+
+        nav ul { display: flex; gap: 28px; }
+
+        nav a { font-size: 14.5px; font-weight: 500; color: var(--text-dark); }
+
+        nav a:hover, nav a.active { color: var(--primary); font-weight: 600; }
+
+        .account-actions { display: flex; align-items: center; gap: 20px; }
+
+        .register-button {
+            background-color: var(--primary);
+            color: var(--bg-white);
+            padding: 10px 22px;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .legal-wrapper {
+            max-width: 1200px;
+            margin: 40px auto 80px auto;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 40px;
+        }
+
+        .legal-sidebar {
+            background-color: var(--bg-white);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow-card);
+            border: 1px solid var(--border-color);
+            height: fit-content;
+        }
+
+        .legal-sidebar h3 {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+            text-align: left;
+        }
+
+        .legal-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .legal-link {
+            display: block;
+            padding: 12px 14px;
+            font-size: 14.5px;
+            font-weight: 500;
+            color: var(--text-dark);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            text-align: left;
+            background: none;
+            border: 1px solid transparent;
+            width: 100%;
+            transition: var(--transition);
+        }
+
+        .legal-link:hover, .legal-link.active {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            font-weight: 600;
+            border-color: var(--border-color);
+        }
+
+        .legal-content {
+            background-color: var(--bg-white);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            box-shadow: var(--shadow-card);
+            border: 1px solid var(--border-color);
+            min-height: 480px;
+        }
+
+        .legal-doc-view {
+            display: none;
+        }
+
+        .legal-doc-view.active {
+            display: block;
+        }
+
+        .legal-doc-view h2 {
+            font-family: var(--font-heading);
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 12px;
+            text-align: left;
+        }
+
+        .legal-doc-view p {
+            font-size: 14.5px;
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 16px;
+            text-align: justify;
+        }
+
+        footer {
+            background-color: #1e1b21;
+            color: #e6e2eb;
+            padding: 80px 24px 30px 24px;
+            margin-top: auto;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr repeat(3, 1fr);
+            gap: 48px;
+            margin-bottom: 60px;
+        }
+
+        .footer-col h4 {
+            font-size: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--bg-white);
+            margin-bottom: 24px;
+        }
+
+        .footer-info h4 { color: #cbbad9; font-size: 20px; }
+
+        .footer-info p { color: #a8a2ae; font-size: 14px; margin-bottom: 12px; }
+
+        .footer-col ul { display: flex; flex-direction: column; gap: 12px; }
+
+        .footer-col a { font-size: 14px; color: #a8a2ae; }
+
+        .footer-col a:hover { color: var(--bg-white); padding-left: 4px; }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 30px;
+            border-top: 1px solid #322d38;
+            text-align: center;
+            font-size: 13px;
+            color: #726b78;
+        }
+
+        @media (max-width: 992px) {
+            .legal-wrapper { grid-template-columns: 1fr; }
+            .footer-container { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="imagenes/stayora_logo.png" alt="Logotipo STAYORA">
+                    <span>STAYORA</span>
+                </a>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="busqueda.html">Búsqueda</a></li>
+                    <li><a href="ofertas.html">Ofertas</a></li>
+                    <li><a href="usuario.html#reservas">Mis Reservas</a></li>
+                    <li><a href="destinos.html">Destinos</a></li>
+                    <li><a href="servicios.html">Servicios</a></li>
+                </ul>
+            </nav>
+
+            <div class="account-actions">
+                <a href="usuario.html" class="login-link">Andres Medina</a>
+                <a href="index.html" class="register-button">Salir</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="legal-wrapper">
+        <aside class="legal-sidebar">
+            <h3>Documentos Legales</h3>
+            <div class="legal-menu">
+                <button class="legal-link active" id="btn-terminos" onclick="switchLegalDoc('terminos')">Términos y Condiciones</button>
+                <button class="legal-link" id="btn-privacidad" onclick="switchLegalDoc('privacidad')">Política de Privacidad</button>
+                <button class="legal-link" id="btn-cookies" onclick="switchLegalDoc('cookies')">Política de Cookies</button>
+                <button class="legal-link" id="btn-cancelaciones" onclick="switchLegalDoc('cancelaciones')">Reservas y Cancelaciones</button>
+            </div>
+        </aside>
+
+        <section class="legal-content">
+            
+            <div id="doc-terminos" class="legal-doc-view active">
+                <h2>Términos y Condiciones</h2>
+                <p>Bienvenido a STAYORA. Al acceder y utilizar nuestro portal de reservas, aceptas sujetarte a las condiciones de uso detalladas en este documento. Ofrecemos una plataforma tecnológica para conectar usuarios con establecimientos de hospedaje autorizados y agencias de transporte en Cusco.</p>
+                <p>El uso indebido de los datos, descargas de recursos no autorizados o cancelaciones deliberadas sin apego a la normativa local serán penalizados según la legislación peruana vigente.</p>
+            </div>
+
+            <div id="doc-privacidad" class="legal-doc-view">
+                <h2>Política de Privacidad</h2>
+                <p>En STAYORA nos tomamos muy en serio la seguridad de tu información personal. Conforme a la Ley de Protección de Datos Personales de Perú, garantizamos que tus datos bancarios, nombres, números telefónicos y correos de contacto serán cifrados y utilizados exclusivamente para procesar tus reservas de hoteles, taxis y guías turísticos.</p>
+                <p>No comercializaremos tus datos personales con terceros no autorizados ajenos al servicio oficial contratado.</p>
+            </div>
+
+            <div id="doc-cookies" class="legal-doc-view">
+                <h2>Política de Cookies</h2>
+                <p>Nuestra plataforma web utiliza cookies técnicas para garantizar que funciones avanzadas como el carrito de reservas y el buscador inteligente se ejecuten con fluidez. También implementamos cookies estadísticas anónimas de Google Analytics para mejorar la navegación de los viajeros por nuestro catálogo de Cusco.</p>
+                <p>Puedes desactivar el uso de cookies desde los ajustes de seguridad de tu navegador preferido.</p>
+            </div>
+
+            <div id="doc-cancelaciones" class="legal-doc-view">
+                <h2>Reservas y Cancelaciones</h2>
+                <p>Toda reserva efectuada a través de STAYORA puede modificarse o cancelarse sin penalización alguna hasta con 48 horas de anticipación a la fecha de ingreso (Check-in), salvo condiciones especiales indicadas de manera particular por el establecimiento.</p>
+                <p>Las cancelaciones fuera de plazo conllevan el cobro automático de la primera noche por concepto de no-show.</p>
+            </div>
+
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col footer-info">
+                <h4>STAYORA</h4>
+                <p>Explora Cusco con hoteles y experiencias únicas.</p>
+                <p><strong>Cusco, Perú.</strong></p>
+                <p>contacto@stayora.com</p>
+            </div>
+
+            <div class="footer-col footer-explore">
+                <h4>Explorar</h4>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="index.html">Hoteles</a></li>
+                    <li><a href="destinos.html">Destinos</a></li>
+                    <li><a href="ofertas.html">Ofertas</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col footer-help">
+                <h4>Ayuda</h4>
+                <ul>
+                    <li><a href="ayuda.html">FAQ</a></li>
+                    <li><a href="ayuda.html#contacto">Contacto</a></li>
+                    <li><a href="ayuda.html#soporte">Chat de soporte</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col footer-legal">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="legal.html#privacidad">Política de privacidad</a></li>
+                    <li><a href="legal.html#terminos">Términos y condiciones</a></li>
+                    <li><a href="legal.html#cookies">Política de cookies</a></li>
+                    <li><a href="legal.html#seguridad">Seguridad y protección</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 Stayora. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        function switchLegalDoc(docId) {
+            const links = document.querySelectorAll('.legal-link');
+            links.forEach(link => {
+                link.classList.remove('active');
+            });
+
+            document.getElementById(`btn-${docId}`).classList.add('active');
+
+            const views = document.querySelectorAll('.legal-doc-view');
+            views.forEach(view => {
+                view.classList.remove('active');
+            });
+
+            document.getElementById(`doc-${docId}`).classList.add('active');
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const hash = window.location.hash.replace('#', '');
+            if (hash === 'privacidad' || hash === 'terminos' || hash === 'cookies' || hash === 'cancelaciones') {
+                switchLegalDoc(hash);
+            }
+        });
+    </script>
+</body>
+</html>

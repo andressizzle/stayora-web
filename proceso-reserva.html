@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stayora - Proceso de Reserva</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #5c3b87;
+            --primary-light: #f3eefb;
+            --primary-hover: #452a66;
+            --accent: #d4af37;
+            --bg-main: #faf8f5;
+            --bg-white: #ffffff;
+            --text-dark: #2d2930;
+            --text-muted: #6e6973;
+            --border-color: #e6e2eb;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            --shadow-soft: 0 12px 40px rgba(92, 59, 135, 0.04);
+            --shadow-card: 0 16px 32px rgba(45, 41, 48, 0.06);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: rgba(247, 247, 247, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+
+        .logo img { height: 32px; }
+
+        nav ul { display: flex; gap: 28px; }
+
+        nav a { font-size: 14.5px; font-weight: 500; color: var(--text-dark); }
+
+        nav a:hover, nav a.active { color: var(--primary); font-weight: 600; }
+
+        .account-actions { display: flex; align-items: center; gap: 20px; }
+
+        .register-button {
+            background-color: var(--primary);
+            color: var(--bg-white);
+            padding: 10px 22px;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .booking-wrapper {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+
+        .booking-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .booking-title {
+            font-family: var(--font-heading);
+            font-size: 38px;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        .booking-subtitle {
+            font-size: 15px;
+            color: var(--text-muted);
+        }
+
+        .timeline-container {
+            position: relative;
+            padding-left: 50px;
+            text-align: left;
+        }
+
+        .vertical-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 20px;
+            width: 2px;
+            background-color: var(--border-color);
+            z-index: 1;
+        }
+
+        .timeline-step {
+            position: relative;
+            margin-bottom: 40px;
+            z-index: 2;
+        }
+
+        .step-badge {
+            position: absolute;
+            left: -50px;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .step-card {
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .step-title {
+            font-family: var(--font-body);
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .dates-grid, .fields-form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .input-field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-field label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .input-field input, .input-field select {
+            padding: 14px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-family: var(--font-body);
+            font-size: 14.5px;
+            background-color: var(--bg-main);
+        }
+
+        .rooms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .room-card {
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-main);
+            transition: var(--transition);
+        }
+
+        .room-card.selected {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .room-image {
+            height: 140px;
+        }
+
+        .room-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .room-info {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1;
+        }
+
+        .room-info h3 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .room-capacity {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .room-price {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .btn-select-room {
+            background-color: white;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 8px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .room-card.selected .btn-select-room {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .payment-box-layout {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: var(--bg-main);
+            padding: 20px;
+            border-radius: var(--radius-md);
+        }
+
+        .payment-brand-icon {
+            font-size: 32px;
+            color: var(--primary);
+        }
+
+        .payment-selector-wrapper {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .payment-selector-wrapper label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .payment-selector-wrapper select {
+            padding: 10px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            background: white;
+        }
+
+        .payment-total-wrapper {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .total-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .total-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .card-confirmation-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .btn-confirm-booking {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: var(--radius-md);
+            font-family: var(--font-body);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(92, 59, 135, 0.2);
+            transition: var(--transition);
+        }
+
+        .btn-confirm-booking:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* Modal Flotante Exitoso */
+        .success-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            padding: 40px;
+            z-index: 1001;
+            text-align: center;
+            display: none;
+            max-width: 400px;
+            width: 90%;
+            transition: var(--transition);
+        }
+
+        .success-modal.active {
+            display: block;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .success-modal i {
+            font-size: 64px;
+            color: #10b981;
+            margin-bottom: 20px;
+        }
+
+        .success-modal h3 {
+            font-family: var(--font-heading);
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 1000;
+            display: none;
+        }
+
+        .modal-overlay.active {
+            display: block;
+        }
+
+        footer {
+            background-color: #1e1b21;
+            color: #e6e2eb;
+            padding: 80px 24px 30px 24px;
+            margin-top: auto;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr repeat(3, 1fr);
+            gap: 48px;
+            margin-bottom: 60px;
+        }
+
+        .footer-col h4 {
+            font-size: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--bg-white);
+            margin-bottom: 24px;
+        }
+
+        .footer-info h4 { color: #cbbad9; font-size: 20px; }
+
+        .footer-info p { color: #a8a2ae; font-size: 14px; margin-bottom: 12px; }
+
+        .footer-col ul { display: flex; flex-direction: column; gap: 12px; }
+
+        .footer-col a { font-size: 14px; color: #a8a2ae; }
+
+        .footer-col a:hover { color: var(--bg-white); padding-left: 4px; }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 30px;
+            border-top: 1px solid #322d38;
+            text-align: center;
+            font-size: 13px;
+            color: #726b78;
+        }
+
+        @media (max-width: 768px) {
+            .dates-grid, .fields-form-grid { grid-template-columns: 1fr; }
+            .card-confirmation-flex { flex-direction: column; text-align: center; }
+            .footer-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="imagenes/stayora_logo.png" alt="Logotipo STAYORA">
+                    <span>STAYORA</span>
+                </a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="busqueda.html">Búsqueda</a></li>
+                    <li><a href="ofertas.html">Ofertas</a></li>
+                    <li><a href="usuario.html#reservas">Mis Reservas</a></li>
+                    <li><a href="destinos.html">Destinos</a></li>
+                    <li><a href="servicios.html">Servicios</a></li>
+                </ul>
+            </nav>
+                <div class="account-actions">
+                    <a href="usuario.html" class="login-link">Andres Medina</a>
+                    <a href="index.html" class="register-button">Salir</a>
+                </div>
+        </div>
+    </header>
+
+    <main class="booking-wrapper">
+        <header class="booking-header">
+            <h1 class="booking-title">Proceso de Reserva</h1>
+            <p class="booking-subtitle">Sigue estos pasos para completar tu reserva de forma rápida y segura.</p>
+        </header>
+
+        <div class="timeline-container">
+            <div class="vertical-line"></div>
+
+            <form class="booking-flow-form" onsubmit="confirmarReserva(event)">
+
+                <!-- PASO 1 -->
+                <div class="timeline-step" id="step-1">
+                    <div class="step-badge">1</div>
+                    <div class="step-card">
+                        <h2 class="step-title">Selección de Fechas</h2>
+                        <div class="dates-grid">
+                            <div class="input-field">
+                                <label for="checkin">Fecha de entrada</label>
+                                <input type="date" id="checkin" value="2026-05-12" required>
+                            </div>
+                            <div class="input-field">
+                                <label for="checkout">Fecha de salida</label>
+                                <input type="date" id="checkout" value="2026-05-20" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PASO 2 -->
+                <div class="timeline-step" id="step-2">
+                    <div class="step-badge">2</div>
+                    <div class="step-card">
+                        <h2 class="step-title">Selección de Habitación</h2>
+                        <div class="rooms-grid">
+                            
+                            <div class="room-card" onclick="seleccionarHabitacion(this, 150)">
+                                <div class="room-image">
+                                    <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=400&auto=format&fit=cover" alt="Estándar">
+                                </div>
+                                <div class="room-info">
+                                    <h3>Habitación Estándar</h3>
+                                    <p class="room-capacity">2 personas</p>
+                                    <p class="room-price">S/ 150 / Noche</p>
+                                    <button type="button" class="btn-select-room">Seleccionar</button>
+                                </div>
+                            </div>
+
+                            <div class="room-card selected" onclick="seleccionarHabitacion(this, 280)">
+                                <div class="room-image">
+                                    <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=400&auto=format&fit=cover" alt="Deluxe">
+                                </div>
+                                <div class="room-info">
+                                    <h3>Habitación Deluxe</h3>
+                                    <p class="room-capacity">2 - 3 personas</p>
+                                    <p class="room-price">S/ 280 / Noche</p>
+                                    <button type="button" class="btn-select-room">Seleccionar</button>
+                                </div>
+                            </div>
+
+                            <div class="room-card" onclick="seleccionarHabitacion(this, 450)">
+                                <div class="room-image">
+                                    <img src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=400&auto=format&fit=cover" alt="Suite">
+                                </div>
+                                <div class="room-info">
+                                    <h3>Suite Familiar</h3>
+                                    <p class="room-capacity">4 personas</p>
+                                    <p class="room-price">S/ 450 / Noche</p>
+                                    <button type="button" class="btn-select-room">Seleccionar</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PASO 3 -->
+                <div class="timeline-step" id="step-3">
+                    <div class="step-badge">3</div>
+                    <div class="step-card">
+                        <h2 class="step-title">Datos del Huésped</h2>
+                        <div class="fields-form-grid">
+                            <div class="input-field">
+                                <label>Nombre completo</label>
+                                <input type="text" value="Juan Pérez" required>
+                            </div>
+                            <div class="input-field">
+                                <label>Correo electrónico</label>
+                                <input type="email" value="juan.perez@stayora.com" required>
+                            </div>
+                            <div class="input-field">
+                                <label>Teléfono</label>
+                                <input type="tel" value="+51 987 654 321" required>
+                            </div>
+                            <div class="input-field">
+                                <label>País</label>
+                                <input type="text" value="Perú" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PASO 4 -->
+                <div class="timeline-step" id="step-4">
+                    <div class="step-badge">4</div>
+                    <div class="step-card">
+                        <h2 class="step-title">Pago Seguros</h2>
+                        <div class="payment-box-layout">
+                            <div class="payment-brand-icon">
+                                <i class="fa-solid fa-credit-card"></i>
+                            </div>
+                            <div class="payment-selector-wrapper">
+                                <label>Método de pago</label>
+                                <select required>
+                                    <option value="visa" selected>Visa Crédito •••• 4321</option>
+                                    <option value="paypal">PayPal</option>
+                                </select>
+                            </div>
+                            <div class="payment-total-wrapper">
+                                <span class="total-label">Total a pagar (8 Noches)</span>
+                                <span class="total-price" id="total-price-display">S/ 2,240.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PASO 5 -->
+                <div class="timeline-step" id="step-5">
+                    <div class="step-badge">5</div>
+                    <div class="step-card card-confirmation-flex">
+                        <div class="confirmation-text">
+                            <h2 class="step-title">Confirmación</h2>
+                            <p>Revisa los datos ingresados arriba y confirma tu transacción.</p>
+                        </div>
+                        <div class="confirmation-action">
+                            <button type="submit" class="btn-confirm-booking">Confirmar reserva</button>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </main>
+
+    <!-- Modal de confirmación -->
+    <div class="modal-overlay" id="overlay"></div>
+    <div class="success-modal" id="modal">
+        <i class="fa-solid fa-circle-check"></i>
+        <h3>¡Reserva Exitosa!</h3>
+        <p>Tu hospedaje ha sido confirmado. Redirigiéndote a tu panel de reservas...</p>
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col footer-info">
+                <h4>STAYORA</h4>
+                <p>Explora Cusco con hoteles y experiencias únicas.</p>
+                <p><strong>Cusco, Perú.</strong></p>
+                <p>contacto@stayora.com</p>
+            </div>
+
+            <div class="footer-col footer-explore">
+                <h4>Explorar</h4>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="index.html">Hoteles</a></li>
+                    <li><a href="destinos.html">Destinos</a></li>
+                    <li><a href="ofertas.html">Ofertas</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col footer-help">
+                <h4>Ayuda</h4>
+                <ul>
+                    <li><a href="ayuda.html">FAQ</a></li>
+                    <li><a href="ayuda.html#contacto">Contacto</a></li>
+                    <li><a href="ayuda.html#soporte">Chat de soporte</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col footer-legal">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="legal.html#privacidad">Política de privacidad</a></li>
+                    <li><a href="legal.html#terminos">Términos y condiciones</a></li>
+                    <li><a href="legal.html#cookies">Política de cookies</a></li>
+                    <li><a href="legal.html#seguridad">Seguridad y protección</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 Stayora. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        let noches = 8; // De 12 Mayo a 20 Mayo
+
+        function seleccionarHabitacion(elemento, precioPorNoche) {
+            document.querySelectorAll('.room-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            elemento.classList.add('selected');
+            
+            const total = noches * precioPorNoche;
+            document.getElementById('total-price-display').innerText = `S/ ${total.toLocaleString('es-PE', {minimumFractionDigits: 2})}`;
+        }
+
+        function confirmarReserva(event) {
+            event.preventDefault();
+            
+            // Mostrar Modal de Éxito
+            document.getElementById('overlay').classList.add('active');
+            document.getElementById('modal').classList.add('active');
+
+            // Redirigir automáticamente al panel de reservas del usuario tras 2.5 segundos
+            setTimeout(() => {
+                window.location.href = 'usuario.html#reservas';
+            }, 2500);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STAYORA - Servicios de Viaje</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #5c3b87;
+            --primary-light: #f3eefb;
+            --primary-hover: #452a66;
+            --accent: #d4af37;
+            --bg-main: #faf8f5;
+            --bg-white: #ffffff;
+            --text-dark: #2d2930;
+            --text-muted: #6e6973;
+            --border-color: #e6e2eb;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            --shadow-soft: 0 12px 40px rgba(92, 59, 135, 0.04);
+            --shadow-card: 0 16px 32px rgba(45, 41, 48, 0.06);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+
+        header {
+            background-color: rgba(247, 247, 247, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+
+        .logo img { height: 32px; }
+
+        nav ul { display: flex; gap: 28px; }
+
+        nav a { font-size: 14.5px; font-weight: 500; color: var(--text-dark); }
+
+        nav a:hover, nav a.active { color: var(--primary); font-weight: 600; }
+
+        .account-actions { display: flex; align-items: center; gap: 20px; }
+
+        .register-button {
+            background-color: var(--primary);
+            color: var(--bg-white);
+            padding: 10px 22px;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .services-hero {
+            background: linear-gradient(rgba(45, 41, 48, 0.65), rgba(45, 41, 48, 0.65)), url('imagenes/cusco.jpg') center/cover no-repeat;
+            padding: 80px 24px;
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 20px;
+            border-radius: var(--radius-lg);
+        }
+
+        .services-hero h1 {
+            font-family: var(--font-heading);
+            font-size: 38px;
+            margin-bottom: 8px;
+        }
+
+        .services-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px 80px 24px;
+        }
+
+        .tabs-menu {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 40px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .tab-item {
+            background: none;
+            border: none;
+            padding: 12px 24px;
+            font-family: var(--font-body);
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-item:hover, .tab-item.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .service-panel { display: none; }
+
+        .service-panel.active { display: block; }
+
+        .providers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .provider-card {
+            background: var(--bg-white);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow-card);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .provider-card h3 {
+            font-family: var(--font-body);
+            font-size: 20px;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .provider-card p {
+            color: var(--text-muted);
+            font-size: 14.5px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .btn-more {
+            align-self: flex-start;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            padding: 10px 24px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-more:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .taxi-reservation-box {
+            max-width: 650px;
+            margin: 0 auto;
+            background: var(--bg-white);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            box-shadow: var(--shadow-card);
+            border: 1px solid var(--border-color);
+        }
+
+        .taxi-reservation-box h2 {
+            font-family: var(--font-heading);
+            font-size: 28px;
+            margin-bottom: 24px;
+            color: var(--text-dark);
+            text-align: center;
+        }
+
+        .taxi-form { display: grid; gap: 20px; }
+
+        .input-group { display: flex; flex-direction: column; text-align: left; }
+
+        .input-group label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .input-group input, .input-group select {
+            padding: 14px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background: var(--bg-main);
+            font-family: var(--font-body);
+            font-size: 14.5px;
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .trayecto-container { margin-top: 10px; }
+
+        .trayecto-container label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .radio-options { display: flex; gap: 24px; }
+
+        .radio-options label {
+            text-transform: none;
+            font-weight: 500;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .btn-taxi-submit {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: var(--radius-md);
+            font-family: var(--font-body);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(92, 59, 135, 0.2);
+            transition: var(--transition);
+        }
+
+        .btn-taxi-submit:hover { background-color: var(--primary-hover); }
+
+        footer {
+            background-color: #1e1b21;
+            color: #e6e2eb;
+            padding: 80px 24px 30px 24px;
+            margin-top: auto;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr repeat(3, 1fr);
+            gap: 48px;
+            margin-bottom: 60px;
+        }
+
+        .footer-col h4 {
+            font-size: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--bg-white);
+            margin-bottom: 24px;
+        }
+
+        .footer-info h4 { color: #cbbad9; font-size: 20px; }
+
+        .footer-info p { color: #a8a2ae; font-size: 14px; margin-bottom: 12px; }
+
+        .footer-col ul { display: flex; flex-direction: column; gap: 12px; }
+
+        .footer-col a { font-size: 14px; color: #a8a2ae; }
+
+        .footer-col a:hover { color: var(--bg-white); padding-left: 4px; }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 30px;
+            border-top: 1px solid #322d38;
+            text-align: center;
+            font-size: 13px;
+            color: #726b78;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="imagenes/stayora_logo.png" alt="Logotipo STAYORA">
+                    <span>STAYORA</span>
+                </a>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="busqueda.html">Búsqueda</a></li>
+                    <li><a href="ofertas.html">Ofertas</a></li>
+                    <li><a href="usuario.html#reservas">Mis Reservas</a></li>
+                    <li><a href="destinos.html">Destinos</a></li>
+                    <li><a href="servicios.html" class="active">Servicios</a></li>
+                </ul>
+            </nav>
+
+            <div class="account-actions">
+                <a href="usuario.html" class="login-link">Andres Medina</a>
+                <a href="index.html" class="register-button">Salir</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="services-hero">
+            <h1>Servicios de Viaje</h1>
+            <p>Reserva tu transporte ideal y contrata expertos locales para tu recorrido por Cusco</p>
+        </section>
+
+        <section class="services-container">
+            <div class="tabs-menu">
+                <button class="tab-item active" onclick="cambiarPestana('autos')">Alquiler de autos</button>
+                <button class="tab-item" onclick="cambiarPestana('taxis')">Taxi desde / al aeropuerto</button>
+                <button class="tab-item" onclick="cambiarPestana('guias')">Guías Turísticas</button>
+            </div>
+
+            <!-- Panel: Autos -->
+            <div id="panel-autos" class="service-panel active">
+                <div class="providers-grid">
+                    <div class="provider-card">
+                        <h3>SIXT</h3>
+                        <p>Vehículos modernos, SUV espaciosos y todoterreno premium para recorrer el Valle Sagrado a tu propio ritmo con las tarifas más convenientes y seguro todo riesgo opcional.</p>
+                        <button class="btn-more">More</button>
+                    </div>
+                    <div class="provider-card">
+                        <h3>EUROPCAR</h3>
+                        <p>La flota más versátil de alquiler de coches en el aeropuerto de Cusco. Retira y entrega directamente de manera exprés y recorre las carreteras andinas con total libertad.</p>
+                        <button class="btn-more">More</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel: Taxis -->
+            <div id="panel-taxis" class="service-panel">
+                <div class="taxi-reservation-box">
+                    <h2>Reserva de Taxi</h2>
+                    <form class="taxi-form">
+                        <div class="input-group">
+                            <label for="recojo">Indica lugar de recojo</label>
+                            <input type="text" id="recojo" placeholder="Ej: Aeropuerto de Cusco">
+                        </div>
+
+                        <div class="input-group">
+                            <label for="destino-taxi">Indica el destino</label>
+                            <input type="text" id="destino-taxi" placeholder="Ej: JW Marriott Cusco">
+                        </div>
+
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="fecha-taxi">Fecha y Hora de recojo</label>
+                                <input type="datetime-local" id="fecha-taxi">
+                            </div>
+                            <div class="input-group">
+                                <label for="pasajeros-taxi">N Pasajeros</label>
+                                <input type="number" id="pasajeros-taxi" value="1" min="1" max="10">
+                            </div>
+                        </div>
+
+                        <div class="trayecto-container">
+                            <label>Opciones de viaje (Trayecto)</label>
+                            <div class="radio-options">
+                                <label><input type="radio" name="trayecto" checked> Ida</label>
+                                <label><input type="radio" name="trayecto"> Ida y Vuelta</label>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn-taxi-submit">Buscar Taxi Autorizado</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Panel: Guías -->
+            <div id="panel-guias" class="service-panel">
+                <div class="providers-grid">
+                    <div class="provider-card">
+                        <h3>Apus Perú</h3>
+                        <p>Especialistas en turismo de aventura y caminatas culturales sostenibles en Cusco. Recorridos con guías locales nativos que te revelarán secretos de la historia incaica.</p>
+                        <button class="btn-more">More</button>
+                    </div>
+                    <div class="provider-card">
+                        <h3>Sky Perú</h3>
+                        <p>Tours de alto valor con guías de montaña profesionales certificados. Disfruta un guiado privado exclusivo y adaptado a tu ritmo por los senderos andinos.</p>
+                        <button class="btn-more">More</button>
+                    </div>
+                    <div class="provider-card">
+                        <h3>Inca Trail Reservations</h3>
+                        <p>La opción número uno para reservar accesos oficiales y guías certificados de la legendaria ruta del Camino Inca a Machu Picchu.</p>
+                        <button class="btn-more">More</button>
+                    </div>
+                    <div class="provider-card">
+                        <h3>Inka Time</h3>
+                        <p>Experiencias de medio día y día completo en Cusco, Valle Sagrado e Inti Raymi de la mano de historiadores y guías oficiales titulados.</p>
+                        <button class="btn-more">More</button>
+                    </div>
+                    <div class="provider-card">
+                        <h3>Travel Group Perú</h3>
+                        <p>Agencia con amplia trayectoria corporativa que ofrece guías multilingües, camionetas privadas de transporte de lujo y soporte ininterrumpido en tus traslados.</p>
+                        <button class="btn-more">More</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col footer-info">
+                <h4>STAYORA</h4>
+                <p>Explora Cusco con hoteles y experiencias únicas.</p>
+                <p><strong>Cusco, Perú.</strong></p>
+                <p>contacto@stayora.com</p>
+            </div>
+
+            <div class="footer-col footer-explore">
+                <h4>Explorar</h4>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="index.html">Hoteles</a></li>
+                    <li><a href="destinos.html">Destinos</a></li>
+                    <li><a href="ofertas.html">Ofertas</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col footer-help">
+                <h4>Ayuda</h4>
+                <ul>
+                    <li><a href="ayuda.html">FAQ</a></li>
+                    <li><a href="ayuda.html#contacto">Contacto</a></li>
+                    <li><a href="ayuda.html#soporte">Chat de soporte</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col footer-legal">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="legal.html#privacidad">Política de privacidad</a></li>
+                    <li><a href="legal.html#terminos">Términos y condiciones</a></li>
+                    <li><a href="legal.html#cookies">Política de cookies</a></li>
+                    <li><a href="legal.html#seguridad">Seguridad y protección</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 Stayora. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        function cambiarPestana(panelId) {
+            const tabs = document.querySelectorAll('.tab-item');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+
+            const paneles = document.querySelectorAll('.service-panel');
+            paneles.forEach(panel => {
+                panel.classList.remove('active');
+            });
+
+            document.getElementById(`panel-${panelId}`).classList.add('active');
+        }
+    </script>
+</body>
+</html>

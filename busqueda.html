@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STAYORA - Resultados de Búsqueda</title>
+    <style>
+        /* ==========================================================================
+           1. VARIABLES, FUENTES Y RESETEO (Sincronizado al 100% con la Home)
+           ========================================================================== */
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary: #5c3b87;         /* Púrpura Real Elegante (Principal) */
+            --primary-light: #f3eefb;   /* Púrpura sutil para fondos de secciones y llamadas */
+            --primary-hover: #452a66;   /* Púrpura oscuro para estados activos */
+            --accent: #d4af37;          /* Dorado de lujo para estrellas y detalles importantes */
+            --bg-main: #faf8f5;         /* Crema de fondo ultra suave original (confort visual) */
+            --bg-white: #ffffff;        /* Blanco puro para tarjetas y contenedores */
+            --text-dark: #2d2930;       /* Gris casi negro para textos principales */
+            --text-muted: #6e6973;      /* Gris suave para descripciones y subtítulos */
+            --border-color: #e6e2eb;    /* Bordes limpios y sutiles */
+            
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            
+            --shadow-soft: 0 12px 40px rgba(92, 59, 135, 0.04);
+            --shadow-card: 0 16px 32px rgba(45, 41, 48, 0.06);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* ==========================================================================
+           2. NAVEGACIÓN Y CABECERA (Header Premium Unificado)
+           ========================================================================== */
+        header {
+            background-color: rgba(247, 247, 247, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+
+        .logo img {
+            height: 32px;
+            width: auto;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 28px;
+        }
+
+        nav a {
+            font-size: 14.5px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .account-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .login-link {
+            font-size: 14.5px;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .login-link:hover {
+            color: var(--primary);
+        }
+
+        .register-button {
+            background-color: var(--primary);
+            color: var(--bg-white);
+            padding: 10px 22px;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 4px 14px rgba(92, 59, 135, 0.2);
+            transition: var(--transition);
+        }
+
+        .register-button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(92, 59, 135, 0.3);
+        }
+
+        /* ==========================================================================
+           3. BANNER DE RESUMEN DE BÚSQUEDA 
+           ========================================================================== */
+        .search-summary-banner {
+            background-color: var(--primary-light);
+            border-bottom: 1px solid var(--border-color);
+            padding: 14px 0;
+            text-align: center;
+        }
+
+        .summary-content p {
+            font-size: 14px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* ==========================================================================
+           4. ESTRUCTURA DEL CONTENIDO DE BÚSQUEDA
+           ========================================================================== */
+        .search-results-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+
+        .main-title {
+            font-family: var(--font-heading);
+            font-size: 32px;
+            color: var(--text-dark);
+            font-weight: 700;
+            margin-bottom: 28px;
+            letter-spacing: -0.5px;
+        }
+
+        .search-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        /* ==========================================================================
+           5. BARRA LATERAL (Filtros y Contenedor del Mapa Corregido)
+           ========================================================================== */
+        .search-sidebar {
+            background: var(--bg-white);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid var(--border-color);
+        }
+
+        .map-container {
+            width: 100%;
+            height: 140px;
+            background-color: #e6e2eb; 
+            border-radius: var(--radius-md);
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .map-container:hover {
+            filter: brightness(0.92);
+        }
+
+        .sidebar-map-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .map-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .map-placeholder span {
+            position: relative;
+            z-index: 2;
+            background: var(--primary);
+            color: var(--bg-white);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(92, 59, 135, 0.3);
+            white-space: nowrap;
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 22px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        .filter-group {
+            margin-bottom: 26px;
+        }
+
+        .filter-group h3 {
+            font-size: 14px;
+            color: var(--text-dark);
+            font-weight: 700;
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .filter-options label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-options label:hover {
+            color: var(--primary);
+        }
+
+        .filter-options input[type="checkbox"] {
+            accent-color: var(--primary);
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        /* ==========================================================================
+           6. TARJETAS DE HOTELES HORIZONTALES
+           ========================================================================== */
+        .results-list {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .hotel-card-horizontal {
+            background: var(--bg-white);
+            border-radius: var(--radius-lg);
+            display: flex;
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+
+        .hotel-card-horizontal:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 24px 48px rgba(45, 41, 48, 0.12);
+        }
+
+        .hotel-image-wrapper {
+            width: 280px;
+            min-height: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .hotel-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .hotel-card-horizontal:hover .hotel-image-wrapper img {
+            transform: scale(1.03);
+        }
+
+        .hotel-info {
+            padding: 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .hotel-info h3 {
+            font-family: var(--font-body);
+            font-size: 20px; 
+            color: var(--text-dark);
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .hotel-description {
+            font-size: 13.5px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .price-action {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .price {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .btn-view {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            padding: 10px 20px;
+            border-radius: var(--radius-md);
+            border: 1px solid transparent;
+            font-size: 13.5px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .btn-view:hover {
+            background-color: var(--primary);
+            color: var(--bg-white);
+        }
+
+        /* ==========================================================================
+           8. PIE DE PÁGINA
+           ========================================================================== */
+        footer {
+            background-color: #1e1b21;
+            color: #e6e2eb;
+            padding: 80px 24px 30px 24px;
+        }
+
+        .footer-main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr repeat(3, 1fr);
+            gap: 48px;
+            margin-bottom: 60px;
+        }
+
+        .footer-column h3 {
+            font-size: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--bg-white);
+            margin-bottom: 24px;
+        }
+
+        .footer-column.brand-col h3 {
+            color: #cbbad9;
+            font-size: 20px;
+            text-transform: none;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-column p {
+            font-size: 14px;
+            color: #a8a2ae;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .footer-column ul {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-column ul li a {
+            color: #a8a2ae;
+            text-decoration: none;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--bg-white);
+            padding-left: 4px;
+        }
+
+        .footer-credits {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 30px;
+            border-top: 1px solid #322d38;
+            text-align: center;
+        }
+
+        .footer-credits p {
+            font-size: 13px;
+            color: #726b78;
+            font-weight: 500;
+        }
+
+        @media (max-width: 992px) {
+            .search-layout {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            .hotel-card-horizontal {
+                flex-direction: column;
+            }
+            .hotel-image-wrapper {
+                width: 100%;
+                height: 200px;
+            }
+            .footer-main-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header-container {
+                flex-direction: column;
+                gap: 16px;
+            }
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 14px;
+            }
+            .footer-main-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="imagenes/stayora_logo.png" alt="Logotipo STAYORA">
+                    <span>STAYORA</span>
+                </a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="busqueda.html" class="active">Búsqueda</a></li>
+                    <li><a href="ofertas.html">Ofertas</a></li>
+                    <li><a href="usuario.html#reservas">Mis Reservas</a></li>
+                    <li><a href="destinos.html">Destinos</a></li>
+                    <li><a href="servicios.html">Servicios</a></li>
+                </ul>
+            </nav>
+            <div class="account-actions">
+                        <a href="usuario.html" class="login-link">Andres Medina</a>
+                        <a href="index.html" class="register-button">Salir</a>
+            </div>
+    </header>
+
+    <div class="search-summary-banner">
+        <div class="summary-content">
+            <p><strong>Cusco, Perú</strong> • 12 May 2026 - 20 May 2026 • 3 Huéspedes</p>
+        </div>
+    </div>
+
+    <main class="search-results-container">
+        
+        <h1 class="main-title">Resultados de búsqueda</h1>
+
+        <div class="search-layout">
+            
+            <aside class="search-sidebar">
+                
+                <div class="map-container">
+                    <div class="map-placeholder">
+                        <img src="imagenes/mapa_prueba.jpg" alt="Mapa de Cusco" class="sidebar-map-img">
+                        <span>Ubicación de Hoteles</span>
+                    </div>
+                </div>
+
+                <div class="filters-container">
+                    <h2 class="sidebar-title">Filtrar por:</h2>
+                    
+                    <div class="filter-group">
+                        <h3>Presupuesto por noche</h3>
+                        <div class="filter-options">
+                            <label><input type="checkbox"> $0 - $50</label>
+                            <label><input type="checkbox"> $50 - $100</label>
+                            <label><input type="checkbox"> $100 - $150</label>
+                            <label><input type="checkbox"> $150+</label>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <h3>Estrellas</h3>
+                        <div class="filter-options">
+                            <label><input type="checkbox"> 5 estrellas ★★★★★</label>
+                            <label><input type="checkbox"> 4 estrellas ★★★★☆</label>
+                            <label><input type="checkbox"> 3 estrellas ★★★☆☆</label>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <section class="results-list">
+
+                <article class="hotel-card-horizontal">
+                    <div class="hotel-info">
+                        <h3>JW Marriott El Convento Cusco</h3>
+                        <p class="hotel-description">Hotel de lujo en el centro histórico. Construido sobre un antiguo convento del siglo XVI, ofrece habitaciones coloniales con sistema de oxígeno suplementario y un restaurante de alta cocina andina.</p>
+                        <p class="hotel-meta">⭐ 4.7 • Wifi Gratis • Desayuno incluido • Estacionamiento</p>
+                        <div class="price-action">
+                            <span class="price">$150 / noche</span>
+                            <a href="proceso-reserva.html" class="btn-view">Ver disponibilidad</a>
+                        </div>
+                    </div>
+                    <div class="hotel-image-wrapper">
+                        <img src="imagenes/JW MARRIOT.jpg" alt="JW Marriott Cusco">
+                    </div>
+                </article>
+
+                <article class="hotel-card-horizontal">
+                    <div class="hotel-info">
+                        <h3>Hilton Garden Inn Cusco</h3>
+                        <p class="hotel-description">Comodidad moderna con vista a Cusco. Ubicado en el barrio tradicional de Santa Ana, cuenta con un patio colonial hermoso, habitaciones amplias con luz natural y vistas panorámicas espectaculares de la ciudad.</p>
+                        <p class="hotel-meta">⭐ 4.6 • Wifi Gratis • Desayuno incluido • Gimnasio</p>
+                        <div class="price-action">
+                            <span class="price">$145 / noche</span>
+                            <a href="proceso-reserva.html" class="btn-view">Ver disponibilidad</a>
+                        </div>
+                    </div>
+                    <div class="hotel-image-wrapper">
+                        <img src="imagenes/Hilton Garden Inn Cusco.jpg" alt="Hilton Garden Inn Cusco">
+                    </div>
+                </article>
+
+                <article class="hotel-card-horizontal">
+                    <div class="hotel-info">
+                        <h3>Antigua Casona San Blas</h3>
+                        <p class="hotel-description">Experiencia andina en San Blas. Un hotel boutique familiar muy acogedor con chimeneas en el patio central, decoración hecha a mano por artesanos locales y un spa de primer nivel para relajarse.</p>
+                        <p class="hotel-meta">⭐ 4.9 • Wifi Gratis • Desayuno incluido • Spa</p>
+                        <div class="price-action">
+                            <span class="price">$135 / noche</span>
+                            <a href="proceso-reserva.html" class="btn-view">Ver disponibilidad</a>
+                        </div>
+                    </div>
+                    <div class="hotel-image-wrapper">
+                        <img src="imagenes/Antigua Casona San Blas.jpg" alt="Antigua Casona San Blas">
+                    </div>
+                </article>
+
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-main-container">
+            <div class="footer-column brand-col">
+                <h3>STAYORA</h3>
+                <p>Explora Cusco con hoteles y experiencias únicas.</p>
+                <p><strong>Cusco, Perú.</strong></p>
+                <p>contacto@stayora.com</p>
+            </div>
+            <div class="footer-column">
+                <h3>EXPLORAR</h3>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="index.html">Hoteles</a></li>
+                    <li><a href="destinos.html">Destinos</a></li>
+                    <li><a href="ofertas.html">Ofertas</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>AYUDA</h3>
+                <ul>
+                    <li><a href="ayuda.html">FAQ</a></li>
+                    <li><a href="ayuda.html#contacto">Contacto</a></li>
+                    <li><a href="ayuda.html#soporte">Chat de soporte</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>LEGAL</h3>
+                <ul>
+                    <li><a href="legal.html#privacidad">Política de privacidad</a></li>
+                    <li><a href="legal.html#terminos">Términos y condiciones</a></li>
+                    <li><a href="legal.html#cookies">Política de cookies</a></li>
+                    <li><a href="legal.html#seguridad">Seguridad y protección</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-credits">
+            <p>&copy; 2026 Stayora. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
